@@ -75,6 +75,19 @@ class optidash(object):
 
 
     ##
+    # Optimizes an image
+    #
+    # @param {Dict} data
+    # @returns {Optidash}
+
+    def optimize(self, data = {}):
+        if data is not None and type(data) is dict:
+            self.options['request']['optimize'] = data
+
+        return self
+
+
+    ##
     # Flips an image
     #
     # @param {Dict} data
