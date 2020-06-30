@@ -13,7 +13,6 @@ Optidash is a modern, AI-powered image optimization and processing API.<br>We wi
 <img src="https://img.shields.io/snyk/vulnerabilities/github/optidash-ai/optidash-python?style=flat&color=success"/>
 <img src="https://img.shields.io/github/issues-raw/optidash-ai/optidash-python?style=flat&color=success"/>
 <img src="https://img.shields.io/pypi/l/optidash?style=flat&color=success"/>
-<img src="https://img.shields.io/twitter/follow/optidashAI?label=Follow%20Us&style=flat&color=success&logo=twitter"/>
 </p>
 
 ---

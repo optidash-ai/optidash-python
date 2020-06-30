@@ -6,7 +6,7 @@
 import os.path
 import json
 import shutil
-import requests
+from requests import Request, Session
 
 
 ##
@@ -81,24 +81,31 @@ def sendRequest(options):
 
 
     ##
-    # Stringify processing parameters
-
-    data = {
-        'data': json.dumps(options['request'])
-    }
-
-
-    ##
     # Initiate POST request to the API
 
-    r = requests.post(
+    s = Session()
+
+    req = Request(
+        'POST',
         endpoint,
         auth = (options['key'], ''),
         headers = headers,
         files = files if 'files' in vars() else None,
+    )
+
+    if 'withFetch' in options:
+        req.json = options['request']
+
+    if 'withUpload' in options:
+        req.data = {
+            'data': json.dumps(options['request'])
+        }
+
+    prepped = req.prepare()
+
+    res = s.send(prepped,
         proxies = proxy if 'proxy' in vars() else None,
-        stream = stream if 'stream' in vars() else False,
-        data = data
+        stream = stream if 'stream' in vars() else False
     )
 
 
@@ -108,7 +115,7 @@ def sendRequest(options):
 
     if 'toJSON' in options:
         try:
-            response = r.json()
+            response = res.json()
         except Exception as e:
             error = 'Unable to parse JSON response from the Optidash API'
 
@@ -132,7 +139,7 @@ def sendRequest(options):
     # Try to parse JSON data from X-Optidash-Meta header
 
     try:
-        meta = json.loads(r.headers['X-Optidash-Meta'])
+        meta = json.loads(res.headers['X-Optidash-Meta'])
     except Exception as e:
         error = 'Unable to parse JSON data from X-Optidash-Meta header'
 
@@ -162,17 +169,13 @@ def sendRequest(options):
     if 'toFile' in options:
         try:
             with open(options['outputPath'], 'wb') as f:
-                r.raw.decode_content = True
-                shutil.copyfileobj(r.raw, f)
+                res.raw.decode_content = True
+                shutil.copyfileobj(res.raw, f)
         except Exception as e:
             error = 'Unable to save resulting image at `' + options['outputPath'] + '` location'
+            return error, meta
 
-            if 'toBuffer' in options:
-                return error, meta, None
-            else:
-                return error, meta
-
-        return None, meta, None
+        return None, meta
 
 
     ##
@@ -180,5 +183,5 @@ def sendRequest(options):
     # when dealing with toBuffer() requests
 
     if 'toBuffer' in options:
-        r.raw.decode_content = True
-        return None, meta, r.raw.data
+        res.raw.decode_content = True
+        return None, meta, res.raw.data

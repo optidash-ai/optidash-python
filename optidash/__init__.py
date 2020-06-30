@@ -52,11 +52,11 @@ class optidash(object):
         if 'withUpload' in self.options:
             self.options['errorMessage'] = 'Optidash only accepts one file input method per call: upload(String|Buffer) or fetch(String)'
 
-        if file is None or file is not file or type(url) is not str:
+        if type(url) is not str:
             self.options['errorMessage'] = 'Optidash fetch(String) method requires a valid file URL passed as an argument'
         else:
             self.options['withFetch'] = True
-            self.options['url'] = file
+            self.options['request']['url'] = url
 
         return self
 
