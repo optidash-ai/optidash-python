@@ -10,7 +10,7 @@ except ImportError:
 
 setup (
     name = 'optidash',
-    version = '1.0.0',
+    version = '1.0.1',
     description = 'Official Python integration for Optidash API',
     long_description = 'Optidash: AI-powered image optimization and processing API. We will drastically speed-up your websites and save you money on bandwidth and storage.',
     url = 'https://github.com/optidash-ai/optidash-python',
