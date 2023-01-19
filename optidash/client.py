@@ -52,7 +52,7 @@ def sendRequest(options):
     # Use JSON request for fetch() mode
 
     if 'withFetch' in options:
-        endpoint = 'https://api.optidash.ai/1.0/fetch'
+        endpoint = options['endpoint'] or 'https://api.optidash.ai/1.0/fetch'
         headers['Content-Type'] = 'application/json'
 
 
@@ -60,7 +60,7 @@ def sendRequest(options):
     # Use Multipart request for upload() mode
 
     if 'withUpload' in options:
-        endpoint = 'https://api.optidash.ai/1.0/upload'
+        endpoint = options['endpoint'] or 'https://api.optidash.ai/1.0/upload'
 
         if type(options['file']) is not str:
             file = options['file'].getvalue()

@@ -13,9 +13,10 @@ from . import client
 # Optidash class
 
 class optidash(object):
-    def __init__(self, key = None):
+    def __init__(self, key = None, endpoint = ''):
         self.options = {
             'key': key,
+            'endpoint': endpoint,
             'request': {}
         }
 
